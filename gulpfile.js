@@ -34,45 +34,58 @@ function browserSync() {
 //   browsersync.reload();
 //   done();
 // }
+// Paths
+const dirPublic = './public';
+const dirSrc = './src';
+const dirRoot = '.';
 
 var paths = {
   src: {
-    css: "./_build/less/styles.less",
-    js: "./_build/js/scripts.js",
-    images: "./_build/images/**/*",
+    css: `${dirSrc}/less/styles.less`,
+    js: "./src/js/scripts.js",
+    images: `${dirSrc}/images/**/*`,
     html: [
-      "public/**/*.html",
-      "!public/js/**/*",
-      "!public/css/**/*",
-      "!public/files/**/*",
-      "!public/fonts/**/*",
-      "!public/images/**/*"
+      'public/**/*.html',
+      '!public/js/**/*',
+      '!public/css/**/*',
+      '!public/files/**/*',
+      '!public/fonts/**/*',
+      '!public/images/**/*',
+      '!public/svg/**/*'
     ]
   },
   dest: {
-    css: "./public/",
+    css: `${dirPublic}/css`,
     js: "./public/js/",
-    html: "./public/",
-    images: "./public/images/"
+    images: `${dirPublic}/images`,
+    html: `${dirPublic}`,
+    svg: `${dirPublic}/svg`
   },
   del: {
-    css: "./public/",
-    js: "./public/js/",
-    images: "./public/images/",
-    html: "public"
+    css: `${dirPublic}/css`,
+    js: `${dirPublic}/js`,
+    images: `${dirPublic}/images`,
+    manifest: `${dirPublic}/manifest.json`,
+    html: `${dirPublic}/**/*.html`,
+    svg: `${dirPublic}/svg`
   },
   watch: {
-    css: "./_build/less/**/*",
-    js: "./_build/js/**/*",
-    images: "./_build/images/**/*",
-    html: ["./layouts/**/*", "./content/**/*"]
-  }
+    css: `${dirSrc}/less/**/*`,
+    js: `${dirSrc}/js/**/*`,
+    images: `${dirSrc}/images/**/*`,
+    html: [`${dirRoot}/layouts/**/*`, `${dirRoot}/content/**/*`],
+    svg: `${dirSrc}/svg/*`
+  },
 };
 
 function clean() {
-  return del([paths.del.css, paths.del.js, paths.del.images, paths.del.html]);
+  return del([
+    paths.del.css, 
+    paths.del.js, 
+    paths.del.images, 
+    paths.del.html
+  ]);
 }
-
 function css() {
   var postcssPlugins = [
     lost,

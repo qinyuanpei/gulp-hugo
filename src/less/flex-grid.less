@@ -1,0 +1,99 @@
+// =============================================================================
+// Mixins: Flexbox
+// =============================================================================
+
+
+// @flex-grid-row: ~'@{flex-grid-row--selector}';
+
+#FLEX() {
+
+  .container(@container-name,
+    @item-name,
+    @columns,
+    @initial-col-width,
+    @gap-constant: 0%,
+  ) {
+    // @flex-grid-row--selector-escaped: e(@flex-grid-row--selector);
+    // @item-name-escaped: e(@item-name);
+
+    @flex-grid-container: ~'[data-flex*="columns: @{columns}"]';
+    @flex-grid-item: ~'[data-flex-item*="width:"]';
+
+    @{flex-grid-container} {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      align-content: stretch;
+      --columns: @columns;
+    }
+
+    @{flex-grid-item} {
+      --width: @initial-col-width;
+      --gap-constant: @gap-constant;
+      --initialbasis: calc(var(--width, 0) / var(--columns) * 100%);
+      --gap: calc((var(--columns) - var(--width)) * var(--gap-constant));
+      flex-basis: calc(var(--initialbasis) - var(--gap));
+      box-sizing: border-box;
+      background: lightgray;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    //  Create Flex Items Temporary Here
+    // =============================================================================
+    @{flex-grid-container} {
+
+      // Default Mobile First
+      .for(@i: 1, @n: @columns) {
+        >[data-flex-item*='width: @{i}'] {
+          --width: @i;
+        }
+      }
+
+      // Tablet Up
+      @media only screen and (min-width: 700px) {
+        .for(@i: 1, @n: @columns) {
+          >[data-flex-item*='width-t: @{i}'] {
+            --width: @i;
+          }
+        }
+      }
+
+      // Laptop Up
+      @media only screen and (min-width: 1080px) {
+        .for(@i: 1, @n: @columns) {
+          >[data-flex-item*='width-l: @{i}'] {
+            --width: @i;
+          }
+        }
+      }
+
+      // Desktop Up
+      @media only screen and (min-width: 1280px) {
+        .for(@i: 1, @n: @columns) {
+          >[data-flex-item*='width-d: @{i}'] {
+            --width: @i;
+          }
+        }
+      }
+
+      // Widescreen Up
+      @media only screen and (min-width: 1680px) {
+        .for(@i: 1, @n: @columns) {
+          >[data-flex-item*='width-w: @{i}'] {
+            --width: @i;
+          }
+        }
+      }
+    }
+  }
+}
+
+//  Call Grid Mixin for Flex Container
+// =============================================================================
+
+#FLEX.container(@container-name: 'row-12',
+  @item-name: 'col',
+  @columns: 12,
+  @initial-col-width: 12,
+  @gap-constant: 0.1%);
